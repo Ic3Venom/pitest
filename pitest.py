@@ -1,5 +1,20 @@
 def test1():
-    pass
+    print 'Lets begin! 3. ...'
+
+    with open('pi.bin', 'r') as f:
+        byte = int( f.read(1) )
+        i    = 0
+        while byte != "":
+            userInput = int( raw_input("Enter next digit (%d)" % (i + 3)) )
+
+            if not userInput == byte:
+                print 'You recited %d digits of pi (Typed %d instead of %d)' % (i, int(userInput), int(byte))
+                break
+
+            i += 1
+            byte = int( f.read(1) )
+        else:
+            print 'You recited all the way to the Feynman point! Congratulations!'''
 def test2():
     pass
 def test3():
@@ -29,9 +44,10 @@ def main():
             test2()
             break
 
-        elif userInput.lower() in ['3', 'all']
+        elif userInput.lower() in ['3', 'all']:
             test3()
             break
+
 if __name__ == '__main__':
     main()
 
