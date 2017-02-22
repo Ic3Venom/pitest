@@ -14,11 +14,12 @@ def test( testLen ):
             userInput = int( raw_input( 'Enter the next ten digits: 3.' ) )
 
     except:
-        print 'Something went wrong when obtaining user offset! Exiting program.'
+        print 'Something went wrong when initial user input! Exiting program.'
         exit(1)
 
     with open('pi.bin', 'r') as f:
-        f.seek(i)
+        f.seek(i - 1)
+        i -=1
 
         try:
             byte = int( f.read(testLen) )
