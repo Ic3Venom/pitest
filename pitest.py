@@ -1,3 +1,5 @@
+import struct
+
 def test( testLen ):
     i = 0
 
@@ -17,22 +19,19 @@ def test( testLen ):
         print 'Something went wrong when initial user input! Exiting program.'
         exit(1)
 
-    with open('pi.bin', 'r') as f:
-        f.seek(i - 1)
-        i -=1
+    with open('pi10000.bin', 'rb') as f:
+        while True:
+            try:
+                f.seek(i + 3)
+                i += testLen
+                byte = int( struct.unpack( str(testLen) + 's', f.read(testLen) )[0] )
+            except:
+                print 'Something went wrong when reading index %d of pi.bin! Exiting program.' % i
+                exit(1)
 
-        try:
-            byte = int( f.read(testLen) )
-
-        except:
-            print 'Something went wrong when reading index %d of pi.bin! Exiting program.' % i
-            exit(1)
-
-        while byte != '':
-            if userInput == byte:
-                i    += testLen
-                byte = int( f.read(testLen) )
-            else:
+            if not byte:
+                print 'You got to all the way to 10,000 digits! Congratulations!'
+            elif not userInput == byte:
                 print 'You remembered %d digits of pi! (Typed %d instead of %d)' % (i, userInput, byte)
                 break
 
@@ -41,18 +40,15 @@ def test( testLen ):
                     output = '%d: ' % (i + 1)
 
                 elif testLen == 10:
-                    output = '%d->%d: ' % i, (i + 10)
-
+                    output = '%d->%d: ' % (i, (i + 10))
                 else:
-                    output = "Enter all digits up to the feynman point:"
+                    print 'Something went terribly wrong! Report this at the GitHub repo.'
 
                 userInput = int( raw_input(output) )
 
             except:
                 print 'Something went wrong when obtaining user input! Exiting program.'
                 exit(1)
-        else:
-            print 'You got to all the way to the Feynman point! Congratulations!'
 
 def main():
     while True:
@@ -60,12 +56,12 @@ def main():
         userInput = raw_input(">>> ")
 
         if userInput.lower() == 'help':
-            print '\nWelcome to the pitest.py help page!\n'
-            print 'For single digit reciting, type \'1\' or \'single\''
-            print 'For ten digits at a time, type \'2\' or \'ten\''
-            print 'For the all digits at once, type \'3\' or \'all\''
-            print 'To start reciting at a certain, type \'4\' or \'position\''
-            print '\nAny bugs, issues, requests? Put them in the GitHub repo.\n'
+            print '\nWelcome to the pitest.py help page!'
+            print 'Listing all input modes:'
+            print '* For single digit reciting, type \'1\' or \'single\''
+            print '* For ten digits at a time, type \'2\' or \'ten\''
+            print '* To start reciting at a certain, type \'4\' or \'position\''
+            print 'Any bugs, issues, requests, suggestions? Put them in the GitHub repo.\n'
 
         elif userInput.lower() == 'quit':
             exit(0)
@@ -76,10 +72,6 @@ def main():
 
         elif userInput.lower() in ['2', 'ten']:
             test(10)
-            break
-
-        elif userInput.lower() in ['3', 'all']:
-            test(-1)
             break
 
         elif userInput.lower() in ['4', 'position']:
