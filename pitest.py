@@ -27,9 +27,10 @@ def test( testLen ):
                 byte = int( struct.unpack( str(testLen) + 's', f.read(testLen) )[0] )
             except:
                 print 'Something went wrong when reading index %d of pi.bin! Exiting program.' % i
+                raw_input()
                 exit(1)
 
-            if not byte:
+            if byte is None:
                 print 'You got to all the way to 10,000 digits! Congratulations!'
             elif not userInput == byte:
                 print 'You remembered %d digits of pi! (Typed %d instead of %d)' % (i, userInput, byte)
@@ -48,6 +49,7 @@ def test( testLen ):
 
             except:
                 print 'Something went wrong when obtaining user input! Exiting program.'
+                raw_input()
                 exit(1)
 
 def main():
@@ -77,6 +79,8 @@ def main():
         elif userInput.lower() in ['4', 'position']:
             test(2)
             break
+
+        raw_input()
 
 if __name__ == '__main__':
     main()
